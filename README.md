@@ -1,4 +1,5 @@
-# bigger
+# Zero Bigger
+Fork of [Bigger](https://github.com/yuki-koyama/bigger)  
 
 ![macOS](https://github.com/yuki-koyama/bigger/workflows/macOS/badge.svg)
 ![Ubuntu](https://github.com/yuki-koyama/bigger/workflows/Ubuntu/badge.svg)
