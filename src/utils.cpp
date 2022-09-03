@@ -8,6 +8,7 @@
 // the MIT license here.
 namespace bgfx_utils
 {
+    static std::string s_ShaderDirectoryPathPrefix;
     /*
      * Copyright 2011-2020 Branimir Karadzic. All rights reserved.
      * License: https://github.com/bkaradzic/bimg#license-bsd-2-clause
@@ -151,16 +152,19 @@ namespace bgfx_utils
 
 } // namespace bgfx_utils
 
+void bigger::setShaderDirectoryPathPrefix(const std::string& prefix) {
+    bgfx_utils::s_ShaderDirectoryPathPrefix = prefix;
+}
 std::string bigger::getShaderDirectoryPath(const bgfx::RendererType::Enum renderer_type)
 {
     switch (renderer_type)
     {
-    case bgfx::RendererType::Direct3D9: return "shaders/dx9";
+    case bgfx::RendererType::Direct3D9: return bgfx_utils::s_ShaderDirectoryPathPrefix + "/dx9";
     case bgfx::RendererType::Direct3D11:
-    case bgfx::RendererType::Direct3D12: return "shaders/dx11";
-    case bgfx::RendererType::Metal: return "shaders/metal";
-    case bgfx::RendererType::OpenGL: return "shaders/glsl";
-    case bgfx::RendererType::OpenGLES: return "shaders/essl";
+    case bgfx::RendererType::Direct3D12: return bgfx_utils::s_ShaderDirectoryPathPrefix + "/dx11";
+    case bgfx::RendererType::Metal: return bgfx_utils::s_ShaderDirectoryPathPrefix + "/metal";
+    case bgfx::RendererType::OpenGL: return bgfx_utils::s_ShaderDirectoryPathPrefix + "/glsl";
+    case bgfx::RendererType::OpenGLES: return bgfx_utils::s_ShaderDirectoryPathPrefix + "/essl";
     case bgfx::RendererType::Nvn:
     case bgfx::RendererType::Gnm:
     case bgfx::RendererType::Noop:
@@ -170,10 +174,10 @@ std::string bigger::getShaderDirectoryPath(const bgfx::RendererType::Enum render
     throw std::runtime_error("Renderer type not supported.");
 }
 
-bgfx::TextureHandle bigger::loadTexture(const char* file_path)
+bgfx::TextureHandle bigger::loadTexture(const std::string& texture_path)
 {
     return bgfx_utils::loadTexture(bgfx_utils::getFileReader(),
-                                   file_path,
+                                   texture_path.c_str(),
                                    BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE,
                                    0,
                                    nullptr,

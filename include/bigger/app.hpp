@@ -16,9 +16,9 @@ namespace bigger
     public:
         App(const unsigned int width = 1280, const unsigned int height = 720) : bigg::Application("", width, height)
         {
-            m_camera.m_position = {1.0f, 1.0f, -2.0f};
-            m_camera.m_target   = {0.0f, 0.0f, 0.0f};
-            m_camera.m_up       = {0.0f, 1.0f, 0.0f};
+            m_camera.setPosition(glm::vec3(1.0f, 1.0f, -2.0f));
+            m_camera.setTarget(glm::vec3(0.0f, 0.0f, 0.0f));
+            m_camera.setUp(glm::vec3(0.0f, 1.0f, 0.0f));
 
             m_time  = 0.0f;
             m_frame = 0;
@@ -40,15 +40,15 @@ namespace bigger
         {
             const glm::mat4 view_matrix = m_camera.getViewMatrix();
             const glm::mat4 proj_matrix =
-                glm::perspective(glm::radians(m_camera.m_fov), getAspect(), m_camera.m_near_clip, m_camera.m_far_clip);
+                glm::perspective(glm::radians(m_camera.fov()), getAspect(), m_camera.nearClip(), m_camera.farClip());
 
             bgfx::setViewTransform(0, glm::value_ptr(view_matrix), glm::value_ptr(proj_matrix));
         }
 
         float getAspect() const { return float(getWidth()) / float(getHeight()); }
 
-        const Camera& getCamera() const { return m_camera; }
-        Camera&       getCamera() { return m_camera; }
+        const Camera& camera() const { return m_camera; }
+        Camera&       camera() { return m_camera; }
 
         unsigned int                                                  m_frame;
         float                                                         m_time;

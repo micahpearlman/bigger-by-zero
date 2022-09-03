@@ -32,11 +32,12 @@ namespace bigger
         {
             bgfx::destroy(s_tex_matcap);
             bgfx::destroy(m_tex_matcap_alt);
+            bgfx::destroy(m_tex_matcap);
         }
 
-        void setTexMatcap(bgfx::TextureHandle* tex_diffuse)
+        void setDiffuseTexture(bgfx::TextureHandle tex_diffuse)
         {
-            assert(isValid(*tex_diffuse));
+            assert(isValid(tex_diffuse));
 
             m_tex_matcap  = tex_diffuse;
             m_is_textured = true;
@@ -47,7 +48,7 @@ namespace bigger
             // Set the diffuse color
             if (m_is_textured)
             {
-                bgfx::setTexture(0, s_tex_matcap, *m_tex_matcap);
+                bgfx::setTexture(0, s_tex_matcap, m_tex_matcap);
             }
             else
             {
@@ -76,12 +77,7 @@ namespace bigger
         /// \brief Texture handle that will be used when no diffuse texture is set.
         bgfx::TextureHandle m_tex_matcap_alt = BGFX_INVALID_HANDLE;
 
-        // -------------------------------------------------------------------------------------------------------------
-        // Handles not managed by this class.
-        // -------------------------------------------------------------------------------------------------------------
-
-        /// \brief Texture handle for diffuse color, which should be set and managed by another class.
-        bgfx::TextureHandle* m_tex_matcap = nullptr;
+        bgfx::TextureHandle m_tex_matcap = BGFX_INVALID_HANDLE;
     };
 } // namespace bigger
 

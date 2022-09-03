@@ -43,9 +43,9 @@ void bigger::App::update(float dt)
     // Update scene objects
     for (auto key_value : m_scene_objects)
     {
-        if (key_value.second->m_is_active)
+        if (key_value.second->isActive())
         {
-            key_value.second->update();
+            key_value.second->update(dt);
         }
     }
 
@@ -57,7 +57,7 @@ void bigger::App::update(float dt)
     // Draw scene objects
     for (auto key_value : m_scene_objects)
     {
-        if (key_value.second->m_is_active && key_value.second->m_is_visible)
+        if (key_value.second->isActive() && key_value.second->isVisible())
         {
             key_value.second->draw();
         }

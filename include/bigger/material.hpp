@@ -24,6 +24,9 @@ namespace bigger
         virtual void submitUniforms() {}
         virtual void drawImgui() {}
 
+        bgfx::ProgramHandle program() { return m_program; }
+
+    protected:
         bgfx::ProgramHandle m_program;
     };
 } // namespace bigger

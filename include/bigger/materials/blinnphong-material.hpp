@@ -5,6 +5,7 @@
 #include <bgfx/bgfx.h>
 #include <bigger/material.hpp>
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
 #include <imgui.h>
 
 namespace bigger

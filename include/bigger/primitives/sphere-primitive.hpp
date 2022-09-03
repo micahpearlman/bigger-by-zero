@@ -2,6 +2,7 @@
 #define BIGGER_SPHERE_PRIMITIVE_HPP
 
 #include <bigger/primitive.hpp>
+#include <glm/ext.hpp>
 
 namespace bigger
 {

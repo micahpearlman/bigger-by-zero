@@ -29,6 +29,7 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/bigg)
 # this option, the NSOpenGLViewContext's setView method was called from a
 # wrong (?) thread during bgfx::init and then the app crashes. This needs to be
 # investigated further.
+# TODO: Micah Fixme
 target_compile_definitions(bgfx PUBLIC BGFX_CONFIG_MULTITHREADED=0)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/rand-util)

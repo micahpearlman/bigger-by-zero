@@ -35,7 +35,6 @@ namespace bigger
         virtual void submitPrimitive(bgfx::ProgramHandle program, bool preserve_state = false) const
         {
             assert(m_is_initialized);
-
             bgfx::setVertexBuffer(0, m_vertex_buffer_handle);
             bgfx::setIndexBuffer(m_index_buffer_handle);
 
