@@ -12,7 +12,7 @@ namespace bigger
     /// \brief Load texture data from a texture image file.
     /// \details This is a wrapper function for using utility functions in bgfx's examples.
     /// \param file_path A file path to the texture image data.
-    bgfx::TextureHandle loadTexture(const std::string& texture_path);
+    bgfx::TextureHandle loadTexture(const std::string& texture_path, bgfx::TextureInfo* info = nullptr);
 } // namespace bigger
 
 #endif // BIGGER_UTILS_HPP
