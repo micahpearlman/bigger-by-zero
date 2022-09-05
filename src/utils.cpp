@@ -174,12 +174,12 @@ std::string bigger::getShaderDirectoryPath(const bgfx::RendererType::Enum render
     throw std::runtime_error("Renderer type not supported.");
 }
 
-bgfx::TextureHandle bigger::loadTexture(const std::string& texture_path)
+bgfx::TextureHandle bigger::loadTexture(const std::string& texture_path, bgfx::TextureInfo* info)
 {
     return bgfx_utils::loadTexture(bgfx_utils::getFileReader(),
                                    texture_path.c_str(),
-                                   BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE,
+                                   BGFX_SAMPLER_NONE,
                                    0,
-                                   nullptr,
+                                   info,
                                    nullptr);
 }
