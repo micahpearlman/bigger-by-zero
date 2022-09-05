@@ -17,6 +17,15 @@ namespace bigger
         virtual void draw(const glm::mat4& parent_transform_matrix = glm::mat4(1.0f)) {}
 
         glm::mat4 transform() const { return m_translate_matrix * m_rotate_matrix * m_scale_matrix; }
+        void setRotationMatrix(const glm::mat4& m) {
+            m_rotate_matrix = m;
+        }
+        void setScaleMatrix(const glm::mat4& m) {
+            m_scale_matrix = m;
+        }
+        void setTranslateMatrix(const glm::mat4& m) {
+            m_translate_matrix = m;
+        }
 
         bool isActive() {
             return m_is_active;
