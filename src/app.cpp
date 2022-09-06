@@ -5,24 +5,20 @@
 #include <rand-util.hpp>
 #include <stdexcept>
 
-int bigger::App::runApp(int argc, char** argv, bgfx::RendererType::Enum type)
-{
+int bigger::App::runApp(int argc, char **argv, bgfx::RendererType::Enum type) {
     static ScreenShotCallback callback;
     return run(argc, argv, type, BGFX_PCI_ID_NONE, 0, &callback);
 }
 
-void bigger::App::addSceneObject(std::shared_ptr<SceneObject> scene_object, const std::string& name)
-{
-    if (name.empty())
-    {
+void bigger::App::addSceneObject(std::shared_ptr<SceneObject> scene_object,
+                                 const std::string           &name) {
+    if (name.empty()) {
         const std::string random_name = randutil::GenRandomString();
-        m_scene_objects[random_name]  = scene_object;
-    }
-    else
-    {
-        const bool has_the_same_name_object = m_scene_objects.find(name) != m_scene_objects.end();
-        if (has_the_same_name_object)
-        {
+        m_scene_objects[random_name] = scene_object;
+    } else {
+        const bool has_the_same_name_object =
+            m_scene_objects.find(name) != m_scene_objects.end();
+        if (has_the_same_name_object) {
             throw std::runtime_error("");
         }
 
@@ -30,8 +26,7 @@ void bigger::App::addSceneObject(std::shared_ptr<SceneObject> scene_object, cons
     }
 }
 
-void bigger::App::update(float dt)
-{
+void bigger::App::update(float dt) {
     // Update state variables
     m_last_dt = dt;
     m_time += dt;
@@ -41,10 +36,8 @@ void bigger::App::update(float dt)
     updateApp();
 
     // Update scene objects
-    for (auto key_value : m_scene_objects)
-    {
-        if (key_value.second->isActive())
-        {
+    for (auto key_value : m_scene_objects) {
+        if (key_value.second->isActive()) {
             key_value.second->update(dt);
         }
     }
@@ -55,17 +48,14 @@ void bigger::App::update(float dt)
     bgfx::touch(0);
 
     // Draw scene objects
-    for (auto key_value : m_scene_objects)
-    {
-        if (key_value.second->isActive() && key_value.second->isVisible())
-        {
+    for (auto key_value : m_scene_objects) {
+        if (key_value.second->isActive() && key_value.second->isVisible()) {
             key_value.second->draw();
         }
     }
 }
 
-int bigger::App::shutdown()
-{
+int bigger::App::shutdown() {
     // Release the scene objects
     m_scene_objects.clear();
 
