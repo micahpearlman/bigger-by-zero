@@ -6,28 +6,18 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <list>
 #include <memory>
+#include <string>
+#include <functional>
 
 namespace bigger {
 
-class SceneObject {
+class SceneNode {
   public:
-    virtual void update(float dt) {
-        for (auto &child : _children) {
-            child->update(dt);
-        }
-    }
+    virtual void update(float dt) = 0;
     virtual void
-    draw(const glm::mat4 &parent_transform_matrix = glm::mat4(1.0f)) {
-        for (auto &child : _children) {
-            child->draw(transform());
-        }
-    }
+    draw(const glm::mat4 &parent_transform_matrix = glm::mat4(1.0f)) = 0;
 
-    virtual void drawUI() {
-        for (auto &child : _children) {
-            child->drawUI();
-        }
-    }
+    virtual void drawUI() = 0;
 
     glm::mat4 transform() const {
         return _translate_matrix * _rotate_matrix * _scale_matrix;
@@ -46,22 +36,20 @@ class SceneObject {
     }
     virtual bool isActive() { return _is_active; }
     virtual bool isVisible() { return _is_visible; }
-    virtual void addChild(std::shared_ptr<SceneObject> child) {
+    virtual void addChild(std::shared_ptr<SceneNode> child) {
         _children.push_back(child);
         _children.unique(); // remove any duplicates
     }
-    virtual void removeChild(std::shared_ptr<SceneObject> child) {
-        std::find(_children.begin(), _children.end(), child);
+    virtual void removeChild(std::shared_ptr<SceneNode> child) {
+        std::remove(_children.begin(), _children.end(), child);
     }
 
-    virtual void destroy() {
-        for (auto &child : _children) {
-            child->destroy();
-        }
-    }
+    virtual void destroy() = 0;
+
+    const std::string &name() const { return _name; }
 
   protected:
-    SceneObject() = default;
+    SceneNode(const std::string &name) : _name(name) {}
 
     glm::mat4 _rotate_matrix = glm::mat4(1.0f);
     glm::mat4 _scale_matrix = glm::mat4(1.0f);
@@ -70,7 +58,9 @@ class SceneObject {
     bool _is_active = true;
     bool _is_visible = true;
 
-    std::list<std::shared_ptr<SceneObject>> _children;
+    std::list<std::shared_ptr<SceneNode>> _children;
+
+    std::string _name;
 };
 } // namespace bigger
 

@@ -3,13 +3,13 @@
 
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
-#include "scene-object.hpp"
+#include "scene-node.hpp"
 #include <memory>
 
 namespace bigger {
-class Camera : public bigger::SceneObject {
+class Camera : public bigger::SceneNode {
   public:
-    static std::shared_ptr<Camera> create(int view_width, int view_height);
+    static std::shared_ptr<Camera> create(const std::string& name, int view_width, int view_height);
 
     virtual glm::mat4 viewMatrix() const = 0;
     virtual void      setViewProj() = 0;
@@ -25,7 +25,7 @@ class Camera : public bigger::SceneObject {
     virtual int              height() const = 0;
 
   protected:
-    Camera() = default;
+    Camera(const std::string& name) : SceneNode(name){}
 };
 } // namespace bigger
 

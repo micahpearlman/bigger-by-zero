@@ -1,6 +1,6 @@
 #include <bigger/app.hpp>
 #include <bigger/material.hpp>
-#include <bigger/scene-object.hpp>
+#include <bigger/scene-node.hpp>
 #include <bigger/screen-shot-callback.hpp>
 #include <rand-util.hpp>
 #include <stdexcept>
@@ -10,20 +10,8 @@ int bigger::App::runApp(int argc, char **argv, bgfx::RendererType::Enum type) {
     return run(argc, argv, type, BGFX_PCI_ID_NONE, 0, &callback);
 }
 
-void bigger::App::addSceneObject(std::shared_ptr<SceneObject> scene_object,
-                                 const std::string           &name) {
-    if (name.empty()) {
-        const std::string random_name = randutil::GenRandomString();
-        _scene_objects[random_name] = scene_object;
-    } else {
-        const bool has_the_same_name_object =
-            _scene_objects.find(name) != _scene_objects.end();
-        if (has_the_same_name_object) {
-            throw std::runtime_error("");
-        }
-
-        _scene_objects[name] = scene_object;
-    }
+void bigger::App::addSceneNode(std::shared_ptr<SceneNode> node) {
+    _scene.push_back(node);
 }
 
 void bigger::App::update(float dt) {
@@ -36,35 +24,38 @@ void bigger::App::update(float dt) {
     updateApp();
 
     // Update scene objects
-    for (auto key_value : _scene_objects) {
-        if (key_value.second->isActive()) {
-            key_value.second->update(dt);
+    // TODO: go through recursively
+    for (auto node : _scene) {
+        if (node->isActive()) {
+            node->update(dt);
         }
     }
 
     // draw UI
-    for (auto key_value : _scene_objects) {
-        if (key_value.second->isActive()) {
-            key_value.second->drawUI();
+    // TODO: go through recursively
+    for (auto node : _scene) {
+        if (node->isActive()) {
+            node->drawUI();
         }
     }
 
     // Prepare drawing
 
-    setRect();
+    setViewRect();
     bgfx::touch(0);
 
     // Draw scene objects
-    for (auto key_value : _scene_objects) {
-        if (key_value.second->isActive() && key_value.second->isVisible()) {
-            key_value.second->draw();
+    // TODO: go through recursively
+    for (auto node : _scene) {
+        if (node->isActive() && node->isVisible()) {
+            node->draw();
         }
     }
 }
 
 int bigger::App::shutdown() {
     // Release the scene objects
-    _scene_objects.clear();
+    _scene.clear();
 
     // Release the application-specific shared resources
     releaseSharedResources();

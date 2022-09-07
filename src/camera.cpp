@@ -6,8 +6,8 @@
 namespace bigger {
 class CameraImpl final : public Camera {
   public:
-    CameraImpl(int view_width, int view_height)
-        : Camera(), _view_width(view_width), _view_height(view_height) {}
+    CameraImpl(const std::string& name, int view_width, int view_height)
+        : Camera(name), _view_width(view_width), _view_height(view_height) {}
 
     glm::mat4 viewMatrix() const override { return transform(); }
 
@@ -37,7 +37,6 @@ class CameraImpl final : public Camera {
     int   height() const override { return _view_height; }
 
     void drawUI() override {
-        SceneObject::drawUI();
 
         ImGui::Begin("Camera");
         {
@@ -67,6 +66,8 @@ class CameraImpl final : public Camera {
     }
 
     void update(float dt) override { setViewProj(); }
+    void draw(const glm::mat4 &parent_transform) override {}
+    void destroy() override {}
 
   private:
     // glm::vec3 _position = glm::vec3(1.0f, 1.0f, -2.0f);
@@ -81,8 +82,8 @@ class CameraImpl final : public Camera {
     int _view_height = 0;
 };
 
-std::shared_ptr<Camera> Camera::create(int view_width, int view_height) {
-    return std::make_shared<CameraImpl>(view_width, view_height);
+std::shared_ptr<Camera> Camera::create(const std::string& name, int view_width, int view_height) {
+    return std::make_shared<CameraImpl>(name, view_width, view_height);
 }
 
 } // namespace bigger

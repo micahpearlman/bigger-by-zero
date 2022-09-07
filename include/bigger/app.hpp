@@ -5,10 +5,10 @@
 // #include <bigger/camera.hpp>
 #include <memory>
 #include <string>
-#include <unordered_map>
+#include <list>
 
 namespace bigger {
-class SceneObject;
+class SceneNode;
 
 class App : public bigg::Application {
   public:
@@ -29,25 +29,21 @@ class App : public bigg::Application {
     virtual void initialize(int argc, char **argv) override = 0;
     virtual void onReset() override {}
 
-    void setRect() {
+    void setViewRect() {
         bgfx::setViewRect(0, 0, 0, uint16_t(getWidth()), uint16_t(getHeight()));
     }
 
 
     float aspect() const { return float(getWidth()) / float(getHeight()); }
 
-    // const Camera &camera() const { return m_camera; }
-    // Camera       &camera() { return m_camera; }
 
-    void addSceneObject(std::shared_ptr<SceneObject> scene_object,
-                        const std::string           &name = "");
+    void addSceneNode(std::shared_ptr<SceneNode> scene_object);
 
   protected:
     unsigned int _frame;
     float        _time;
     float        _last_dt;
-    std::unordered_map<std::string, std::shared_ptr<SceneObject>>
-        _scene_objects;
+    std::list<std::shared_ptr<SceneNode>> _scene;
 
   private:
     // Events provided by bigg::Application
