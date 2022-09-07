@@ -3,62 +3,36 @@
 
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
+#include "scene-object.hpp"
+#include <memory>
 
-namespace bigger
-{
-    class Camera
-    {
-    public:
-        glm::mat4 getViewMatrix() const { return glm::lookAt(m_position, m_target, m_up); }
+namespace bigger {
+class Camera : public bigger::SceneObject {
+  public:
+    static std::shared_ptr<Camera> create(int view_width, int view_height);
 
-        void drawImgui();
+    virtual glm::mat4 viewMatrix() const = 0;
+    virtual void      setViewProj() = 0;
 
-        const glm::vec3& position() {
-            return m_position;
-        }
-        void setPosition(const glm::vec3& p) {
-            m_position = p;
-        }
-        const glm::vec3& target() {
-            return m_target;
-        }
-        void setTarget(const glm::vec3& t) {
-            m_target = t;
-        }
-        const glm::vec3& up() {
-            return m_up;
-        }
-        void setUp(const glm::vec3& u) {
-            m_up = u;
-        }
-        float fov() {
-            return m_fov;
-        }
-        void setFov(float f) {
-            m_fov = f;
-        }
-        float nearClip() {
-            return m_near_clip;
-        }
-        void setNearClip(float c) {
-            m_near_clip = c;
-        }
-        float farClip() {
-            return m_far_clip;
-        }
-        void setFarClip(float c) {
-            m_far_clip = c;
-        }
+    virtual const glm::vec3 &position() const = 0;
+    virtual void             setPosition(const glm::vec3 &p) = 0;
+    virtual const glm::vec3 &target() const = 0;
+    virtual void             setTarget(const glm::vec3 &t) = 0;
+    virtual const glm::vec3 &up() const = 0;
+    virtual void             setUp(const glm::vec3 &u) = 0;
+    virtual float            fov() const = 0;
+    virtual void             setFov(float f) = 0;
+    virtual float            nearClip() const = 0;
+    virtual void             setNearClip(float c) = 0;
+    virtual float            farClip() const = 0;
+    virtual void             setFarClip(float c) = 0;
+    virtual float            aspect() const = 0;
+    virtual int              width() const = 0;
+    virtual int              height() const = 0;
 
-    private:
-        glm::vec3 m_position = glm::vec3(1.0f, 1.0f, -2.0f);
-        glm::vec3 m_target   = glm::vec3(0.0f, 0.0f, 0.0f);
-        glm::vec3 m_up       = glm::vec3(0.0f, 1.0f, 0.0f);
-
-        float m_fov       = 60.0f;
-        float m_near_clip = 0.1f;
-        float m_far_clip  = 100.0f;
-    };
+  protected:
+    Camera() = default;
+};
 } // namespace bigger
 
 #endif // BIGGER_CAMERA_HPP

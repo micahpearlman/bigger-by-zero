@@ -21,6 +21,12 @@ class SceneObject {
         }
     }
 
+    virtual void drawUI() {
+        for (auto &child : _children) {
+            child->drawUI();
+        }
+    }
+
     glm::mat4 transform() const {
         return _translate_matrix * _rotate_matrix * _scale_matrix;
     }
@@ -38,6 +44,12 @@ class SceneObject {
     }
     virtual void removeChild(std::shared_ptr<SceneObject> child) {
         std::find(_children.begin(), _children.end(), child);
+    }
+
+    virtual void destroy() {
+        for (auto &child : _children) {
+            child->destroy();
+        }
     }
 
   protected:

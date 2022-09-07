@@ -14,41 +14,48 @@ void bigger::App::addSceneObject(std::shared_ptr<SceneObject> scene_object,
                                  const std::string           &name) {
     if (name.empty()) {
         const std::string random_name = randutil::GenRandomString();
-        m_scene_objects[random_name] = scene_object;
+        _scene_objects[random_name] = scene_object;
     } else {
         const bool has_the_same_name_object =
-            m_scene_objects.find(name) != m_scene_objects.end();
+            _scene_objects.find(name) != _scene_objects.end();
         if (has_the_same_name_object) {
             throw std::runtime_error("");
         }
 
-        m_scene_objects[name] = scene_object;
+        _scene_objects[name] = scene_object;
     }
 }
 
 void bigger::App::update(float dt) {
     // Update state variables
-    m_last_dt = dt;
-    m_time += dt;
-    ++m_frame;
+    _last_dt = dt;
+    _time += dt;
+    ++_frame;
 
     // Call the application-specific update method
     updateApp();
 
     // Update scene objects
-    for (auto key_value : m_scene_objects) {
+    for (auto key_value : _scene_objects) {
         if (key_value.second->isActive()) {
             key_value.second->update(dt);
         }
     }
 
+    // draw UI
+    for (auto key_value : _scene_objects) {
+        if (key_value.second->isActive()) {
+            key_value.second->drawUI();
+        }
+    }
+
     // Prepare drawing
-    setViewProj();
+
     setRect();
     bgfx::touch(0);
 
     // Draw scene objects
-    for (auto key_value : m_scene_objects) {
+    for (auto key_value : _scene_objects) {
         if (key_value.second->isActive() && key_value.second->isVisible()) {
             key_value.second->draw();
         }
@@ -57,7 +64,7 @@ void bigger::App::update(float dt) {
 
 int bigger::App::shutdown() {
     // Release the scene objects
-    m_scene_objects.clear();
+    _scene_objects.clear();
 
     // Release the application-specific shared resources
     releaseSharedResources();
