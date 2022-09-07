@@ -4,6 +4,7 @@
 #include <bigger/screen-shot-callback.hpp>
 #include <rand-util.hpp>
 #include <stdexcept>
+#include <stack>
 
 int bigger::App::runApp(int argc, char **argv, bgfx::RendererType::Enum type) {
     static ScreenShotCallback callback;
@@ -24,20 +25,45 @@ void bigger::App::update(float dt) {
     updateApp();
 
     // Update scene objects
-    // TODO: go through recursively
+    std::stack<std::shared_ptr<SceneNode>> scene_stack;
+
+    // update hierarchuy
     for (auto node : _scene) {
         if (node->isActive()) {
-            node->update(dt);
+            std::stack<std::shared_ptr<SceneNode>> scene_stack;
+            scene_stack.push(node);
+            while (scene_stack.empty() == false) {
+                std::shared_ptr<SceneNode> parent = scene_stack.top();
+                scene_stack.pop();
+                parent->update(dt);
+                for (auto child : parent->children()) {
+                    scene_stack.push(child);
+                }
+            }
         }
     }
 
     // draw UI
-    // TODO: go through recursively
     for (auto node : _scene) {
         if (node->isActive()) {
-            node->drawUI();
+            std::stack<std::shared_ptr<SceneNode>> scene_stack;
+            scene_stack.push(node);
+            while (scene_stack.empty() == false) {
+                std::shared_ptr<SceneNode> parent = scene_stack.top();
+                scene_stack.pop();
+                parent->drawUI();
+                for (auto child : parent->children()) {
+                    scene_stack.push(child);
+                }
+            }
         }
     }
+
+    // for (auto node : _scene) {
+    //     if (node->isActive()) {
+    //         node->drawUI();
+    //     }
+    // }
 
     // Prepare drawing
 
@@ -45,12 +71,27 @@ void bigger::App::update(float dt) {
     bgfx::touch(0);
 
     // Draw scene objects
-    // TODO: go through recursively
+    // TODO: concat matrices
     for (auto node : _scene) {
-        if (node->isActive() && node->isVisible()) {
-            node->draw();
+        if (node->isActive()) {
+            std::stack<std::shared_ptr<SceneNode>> scene_stack;
+            scene_stack.push(node);
+            while (scene_stack.empty() == false) {
+                std::shared_ptr<SceneNode> parent = scene_stack.top();
+                scene_stack.pop();
+                parent->draw();
+                for (auto child : parent->children()) {
+                    scene_stack.push(child);
+                }
+            }
         }
     }
+
+    // for (auto node : _scene) {
+    //     if (node->isActive() && node->isVisible()) {
+    //         node->draw();
+    //     }
+    // }
 }
 
 int bigger::App::shutdown() {

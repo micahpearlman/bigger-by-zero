@@ -44,6 +44,8 @@ class SceneNode {
         std::remove(_children.begin(), _children.end(), child);
     }
 
+    std::list<std::shared_ptr<SceneNode>> &children() { return _children; }
+
     virtual void destroy() = 0;
 
     const std::string &name() const { return _name; }
