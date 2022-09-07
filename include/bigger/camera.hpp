@@ -14,12 +14,6 @@ class Camera : public bigger::SceneObject {
     virtual glm::mat4 viewMatrix() const = 0;
     virtual void      setViewProj() = 0;
 
-    virtual const glm::vec3 &position() const = 0;
-    virtual void             setPosition(const glm::vec3 &p) = 0;
-    virtual const glm::vec3 &target() const = 0;
-    virtual void             setTarget(const glm::vec3 &t) = 0;
-    virtual const glm::vec3 &up() const = 0;
-    virtual void             setUp(const glm::vec3 &u) = 0;
     virtual float            fov() const = 0;
     virtual void             setFov(float f) = 0;
     virtual float            nearClip() const = 0;
