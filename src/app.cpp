@@ -15,6 +15,45 @@ void bigger::App::addSceneNode(std::shared_ptr<SceneNode> node) {
     _scene.push_back(node);
 }
 
+void bigger::App::render(float dt) {
+    renderApp();
+    // draw UI
+    for (auto node : _scene) {
+        if (node->isActive()) {
+            std::stack<std::shared_ptr<SceneNode>> scene_stack;
+            scene_stack.push(node);
+            while (scene_stack.empty() == false) {
+                std::shared_ptr<SceneNode> parent = scene_stack.top();
+                scene_stack.pop();
+                parent->drawUI();
+                for (auto child : parent->children()) {
+                    scene_stack.push(child);
+                }
+            }
+        }
+    }
+    // Prepare drawing
+    setViewRect();
+    bgfx::touch(0);
+
+    // Draw scene objects
+    // TODO: concat matrices
+    for (auto node : _scene) {
+        if (node->isActive()) {
+            std::stack<std::shared_ptr<SceneNode>> scene_stack;
+            scene_stack.push(node);
+            while (scene_stack.empty() == false) {
+                std::shared_ptr<SceneNode> parent = scene_stack.top();
+                scene_stack.pop();
+                parent->draw();
+                for (auto child : parent->children()) {
+                    scene_stack.push(child);
+                }
+            }
+        }
+    }
+}
+
 void bigger::App::update(float dt) {
     // Update state variables
     _last_dt = dt;
@@ -42,64 +81,16 @@ void bigger::App::update(float dt) {
             }
         }
     }
-
-    // draw UI
-    for (auto node : _scene) {
-        if (node->isActive()) {
-            std::stack<std::shared_ptr<SceneNode>> scene_stack;
-            scene_stack.push(node);
-            while (scene_stack.empty() == false) {
-                std::shared_ptr<SceneNode> parent = scene_stack.top();
-                scene_stack.pop();
-                parent->drawUI();
-                for (auto child : parent->children()) {
-                    scene_stack.push(child);
-                }
-            }
-        }
-    }
-
-    // for (auto node : _scene) {
-    //     if (node->isActive()) {
-    //         node->drawUI();
-    //     }
-    // }
-
-    // Prepare drawing
-
-    setViewRect();
-    bgfx::touch(0);
-
-    // Draw scene objects
-    // TODO: concat matrices
-    for (auto node : _scene) {
-        if (node->isActive()) {
-            std::stack<std::shared_ptr<SceneNode>> scene_stack;
-            scene_stack.push(node);
-            while (scene_stack.empty() == false) {
-                std::shared_ptr<SceneNode> parent = scene_stack.top();
-                scene_stack.pop();
-                parent->draw();
-                for (auto child : parent->children()) {
-                    scene_stack.push(child);
-                }
-            }
-        }
-    }
-
-    // for (auto node : _scene) {
-    //     if (node->isActive() && node->isVisible()) {
-    //         node->draw();
-    //     }
-    // }
 }
 
 int bigger::App::shutdown() {
-    // Release the scene objects
-    _scene.clear();
+    addRenderFunction([this](bigg::Application::Event &event) {
+        // Release the scene objects
+        _scene.clear();
 
-    // Release the application-specific shared resources
-    releaseSharedResources();
+        // Release the application-specific shared resources
+        releaseSharedResources();
+    });
 
     return 0;
 }

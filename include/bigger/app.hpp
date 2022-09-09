@@ -2,7 +2,6 @@
 #define BIGGER_APP_HPP
 
 #include <bigg.hpp>
-// #include <bigger/camera.hpp>
 #include <memory>
 #include <string>
 #include <list>
@@ -23,6 +22,7 @@ class App : public bigg::Application {
 
     // Events to be overridden
     virtual void updateApp() = 0;
+    virtual void renderApp() = 0;
     virtual void releaseSharedResources() = 0;
 
     // Events to be overridden, provided by bigg::Application
@@ -49,6 +49,7 @@ class App : public bigg::Application {
     // Events provided by bigg::Application
     void update(float dt) override;
     int  shutdown() override;
+    void render(float dt) override;
 };
 } // namespace bigger
 
