@@ -84,13 +84,11 @@ void bigger::App::update(float dt) {
 }
 
 int bigger::App::shutdown() {
-    addRenderFunction([this](bigg::Application::Event &event) {
-        // Release the scene objects
-        _scene.clear();
+    // Release the scene objects
+    _scene.clear();
 
-        // Release the application-specific shared resources
-        releaseSharedResources();
-    });
+    // Release the application-specific shared resources
+    releaseSharedResources();
 
     return 0;
 }
