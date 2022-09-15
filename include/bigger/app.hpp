@@ -38,6 +38,7 @@ class App : public bigg::Application {
 
 
     void addSceneNode(std::shared_ptr<SceneNode> scene_object);
+    
 
   protected:
     unsigned int _frame;

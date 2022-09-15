@@ -15,8 +15,8 @@ namespace bigger
             constexpr int   latitude_resolution  = 20;
             constexpr int   longitude_resolution = 30;
 
-            m_vertices.resize(latitude_resolution * longitude_resolution * 6);
-            m_triangle_list.resize(latitude_resolution * longitude_resolution * 6);
+            _vertices.resize(latitude_resolution * longitude_resolution * 6);
+            _triangle_list.resize(latitude_resolution * longitude_resolution * 6);
 
             for (int i = 0; i < longitude_resolution; ++i)
             {
@@ -47,18 +47,18 @@ namespace bigger
                     const glm::vec3 vertex_4 = {sin_1 * x_2, sin_1 * y_2, cos_1};
                     const glm::vec3 vertex_5 = {sin_1 * x_1, sin_1 * y_1, cos_1};
 
-                    m_vertices[offset + 0] = {vertex_0, vertex_0};
-                    m_vertices[offset + 1] = {vertex_1, vertex_1};
-                    m_vertices[offset + 2] = {vertex_2, vertex_2};
-                    m_vertices[offset + 3] = {vertex_3, vertex_3};
-                    m_vertices[offset + 4] = {vertex_4, vertex_4};
-                    m_vertices[offset + 5] = {vertex_5, vertex_5};
+                    _vertices[offset + 0] = {vertex_0, vertex_0};
+                    _vertices[offset + 1] = {vertex_1, vertex_1};
+                    _vertices[offset + 2] = {vertex_2, vertex_2};
+                    _vertices[offset + 3] = {vertex_3, vertex_3};
+                    _vertices[offset + 4] = {vertex_4, vertex_4};
+                    _vertices[offset + 5] = {vertex_5, vertex_5};
                 }
             }
 
-            for (int i = 0; i < m_triangle_list.size(); ++i)
+            for (int i = 0; i < _triangle_list.size(); ++i)
             {
-                m_triangle_list[i] = static_cast<uint16_t>(i);
+                _triangle_list[i] = static_cast<uint16_t>(i);
             }
 
             Primitive::initializePrimitive();

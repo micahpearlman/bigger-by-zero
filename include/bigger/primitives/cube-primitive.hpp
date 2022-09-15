@@ -10,7 +10,7 @@ namespace bigger
     public:
         CubePrimitive()
         {
-            m_vertices = {
+            _vertices = {
                 {{+0.5f, +0.5f, +0.5f}, {0.0f, 0.0f, +1.0f}}, //
                 {{-0.5f, +0.5f, +0.5f}, {0.0f, 0.0f, +1.0f}}, //
                 {{-0.5f, -0.5f, +0.5f}, {0.0f, 0.0f, +1.0f}}, //
@@ -54,7 +54,7 @@ namespace bigger
                 {{+0.5f, -0.5f, +0.5f}, {0.0f, -1.0f, 0.0f}}, //
             };
 
-            m_triangle_list = {
+            _triangle_list = {
                 0,  1,  2,  3,  4,  5,  //
                 6,  7,  8,  9,  10, 11, //
                 12, 13, 14, 15, 16, 17, //

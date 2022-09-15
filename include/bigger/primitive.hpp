@@ -25,54 +25,54 @@ struct PositionNormalUvVertex {
 
 class Primitive {
   public:
-    Primitive() : m_is_initialized(false) {}
+    Primitive() : _is_initialized(false) {}
     virtual ~Primitive() { destroyPrimitive(); }
 
     virtual void submitPrimitive(bgfx::ProgramHandle program,
                                  bool preserve_state = false) const {
-        assert(m_is_initialized);
-        bgfx::setVertexBuffer(0, m_vertex_buffer_handle);
-        bgfx::setIndexBuffer(m_index_buffer_handle);
+        assert(_is_initialized);
+        bgfx::setVertexBuffer(0, _vertex_buffer_handle);
+        bgfx::setIndexBuffer(_index_buffer_handle);
 
         bgfx::submit(0, program, bgfx::ViewMode::Default, preserve_state);
     }
 
   protected:
-    std::vector<PositionNormalUvVertex> m_vertices;
-    std::vector<uint16_t>               m_triangle_list;
+    std::vector<PositionNormalUvVertex> _vertices;
+    std::vector<uint16_t>               _triangle_list;
 
-    bool m_is_initialized;
+    bool _is_initialized;
 
-    bgfx::VertexBufferHandle m_vertex_buffer_handle;
-    bgfx::IndexBufferHandle  m_index_buffer_handle;
+    bgfx::VertexBufferHandle _vertex_buffer_handle;
+    bgfx::IndexBufferHandle  _index_buffer_handle;
 
     virtual void initializePrimitive() {
-        assert(!m_vertices.empty());
-        assert(!m_triangle_list.empty());
+        assert(!_vertices.empty());
+        assert(!_triangle_list.empty());
 
         const bgfx::VertexLayout vertex_layout =
             PositionNormalUvVertex::getVertexLayout();
 
-        m_vertex_buffer_handle = bgfx::createVertexBuffer(
-            bgfx::makeRef(m_vertices.data(),
-                          sizeof(PositionNormalUvVertex) * m_vertices.size()),
+        _vertex_buffer_handle = bgfx::createVertexBuffer(
+            bgfx::makeRef(_vertices.data(),
+                          sizeof(PositionNormalUvVertex) * _vertices.size()),
             vertex_layout);
-        m_index_buffer_handle = bgfx::createIndexBuffer(bgfx::makeRef(
-            m_triangle_list.data(), sizeof(uint16_t) * m_triangle_list.size()));
+        _index_buffer_handle = bgfx::createIndexBuffer(bgfx::makeRef(
+            _triangle_list.data(), sizeof(uint16_t) * _triangle_list.size()));
 
-        m_is_initialized = true;
+        _is_initialized = true;
     }
 
   private:
     virtual void destroyPrimitive() {
-        assert(m_is_initialized);
+        assert(_is_initialized);
 
-        if (bgfx::isValid(m_vertex_buffer_handle)) {
-            bgfx::destroy(m_vertex_buffer_handle);
+        if (bgfx::isValid(_vertex_buffer_handle)) {
+            bgfx::destroy(_vertex_buffer_handle);
         }
 
-        if (bgfx::isValid(m_index_buffer_handle)) {
-            bgfx::destroy(m_index_buffer_handle);
+        if (bgfx::isValid(_index_buffer_handle)) {
+            bgfx::destroy(_index_buffer_handle);
         }
     }
 };

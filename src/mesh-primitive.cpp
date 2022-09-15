@@ -37,7 +37,7 @@ bigger::MeshPrimitive::MeshPrimitive(const std::string& obj_path)
     {
         for (const auto& index : shape.mesh.indices)
         {
-            m_vertices.push_back({{
+            _vertices.push_back({{
                                       attrib.vertices[3 * index.vertex_index + 0],
                                       attrib.vertices[3 * index.vertex_index + 1],
                                       attrib.vertices[3 * index.vertex_index + 2],
@@ -51,7 +51,7 @@ bigger::MeshPrimitive::MeshPrimitive(const std::string& obj_path)
                                       attrib.texcoords[2 * index.texcoord_index + 0],
                                       attrib.texcoords[2 * index.texcoord_index + 1],
                                   }});
-            m_triangle_list.push_back(uint16_t(m_triangle_list.size()));
+            _triangle_list.push_back(uint16_t(_triangle_list.size()));
         }
     }
 
