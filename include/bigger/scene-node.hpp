@@ -16,8 +16,9 @@ class SceneNode {
     virtual void update(float dt) = 0;
     virtual void
     draw(const glm::mat4 &parent_transform_matrix = glm::mat4(1.0f)) = 0;
-
     virtual void drawUI() = 0;
+
+    virtual void postRender() {}
 
     glm::mat4 transform() const {
         return _translate_matrix * _rotate_matrix * _scale_matrix;
@@ -50,6 +51,9 @@ class SceneNode {
 
     const std::string &name() const { return _name; }
 
+    bool isDrawUI() const { return _is_draw_ui; }
+    void setDrawUI(bool draw_ui) { _is_draw_ui = draw_ui; }
+
   protected:
     SceneNode(const std::string &name) : _name(name) {}
 
@@ -59,6 +63,7 @@ class SceneNode {
 
     bool _is_active = true;
     bool _is_visible = true;
+    bool _is_draw_ui = true;
 
     std::list<std::shared_ptr<SceneNode>> _children;
 

@@ -54,6 +54,27 @@ void bigger::App::render(float dt) {
     }
 }
 
+void bigger::App::postRender(float dt) {
+    // Do post render call
+    // TODO: concat matrices
+    for (auto node : _scene) {
+        if (node->isActive()) {
+            std::stack<std::shared_ptr<SceneNode>> scene_stack;
+            scene_stack.push(node);
+            while (scene_stack.empty() == false) {
+                std::shared_ptr<SceneNode> parent = scene_stack.top();
+                scene_stack.pop();
+                parent->postRender();
+                for (auto child : parent->children()) {
+                    scene_stack.push(child);
+                }
+            }
+        }
+    }
+
+    postRenderApp();
+}
+
 void bigger::App::update(float dt) {
     // Update state variables
     _last_dt = dt;
